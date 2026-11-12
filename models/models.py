@@ -155,4 +155,7 @@ class EvaluationScore(db.Model):
 class Setting(db.Model):
     __tablename__ = "settings"
     key   = db.Column(db.String(60), primary_key=True)
-    value = db.Column(db.String(255))
+    value = db.Column(db.String(255))     
+
+
+
