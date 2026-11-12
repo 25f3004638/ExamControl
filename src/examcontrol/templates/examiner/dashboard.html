@@ -1,0 +1,79 @@
+{% extends "examiner/base_examiner.html" %}
+{% import "admin/_macros.html" as macros %}
+{% import "admin/_status.html" as status %}
+{% block title %}Examiner Dashboard - EMP{% endblock %}
+
+{% block content %}
+{% if not exams %}
+    <div class="alert alert-info mt-4">
+        You have no assigned examinations at this time.
+    </div>
+{% else %}
+    <div class="row g-4">
+        {% for exam in exams %}
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">{{ exam.name }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text small text-muted">Type: {{ exam.type }}</p>
+                        <p class="card-text small text-muted">Duration: {{ exam.duration }} min</p>
+                        <p class="card-text small text-muted">Max Marks: {{ exam.max_marks }}</p>
+                        <p class="card-text small text-muted">Status: {{ exam.status }}</p>
+
+                        {% if exam.slots %}
+                            <hr class="my-2">
+                            <p class="card-text small fw-semibold">Slots: {{ exam.slots|length }}</p>
+                            <ul class="list-unstyled small">
+                                {% for slot in exam.slots %}
+                                    <li>
+                                        <span class="badge bg-secondary">{{ slot.date }} {{ slot.start_time }}-{{ slot.end_time }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if exam.bookings|length > 0 %}
+                            <hr class="my-2">
+                            <p class="card-text small text-muted">Booked Students: {{ exam.bookings|length }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if can_create_slots %}
+    <hr class="my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Create New Slot</h3>
+        <small class="text-muted">Only available during slot creation period</small>
+    </div>
+
+    <form method="POST" action="{{ url_for('examiner_create_slot') }}">
+        <div class="row g-3">
+            <div class="col-md-6">
+                {{ macros.select_row('Examination', 'exam_id', '', exams_options, true) }}
+            </div>
+            <div class="col-md-6">
+                {{ macros.form_row('Date', 'date', '', type='date', required=true) }}
+            </div>
+            <div class="col-md-4">
+                {{ macros.form_row('Start Time', 'start_time', '', type='time', required=true) }}
+            </div>
+            <div class="col-md-4">
+                {{ macros.form_row('End Time', 'end_time', '', type='time', required=true) }}
+            </div>
+            <div class="col-md-4">
+                {{ macros.form_row('Capacity', 'capacity', '', type='number', min=1, required=true) }}
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Create Slot</button>
+        </div>
+    </form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "student/base_student.html" %}
+{% import "admin/_macros.html" as macros %}
+{% block title %}Edit Profile - EMP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Edit Profile</h2>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header fw-semibold">{{ 'Update Student' if edit else 'Student Profile' }}</div>
+            <div class="card-body p-4">
+                {% if edit %}
+                    <form method="POST" action="{{ url_for('student_profile', student_id=student_id) }}">
+                        {{ macros.form_row('Name', 'name', edit.name, required=true) }}
+                        {{ macros.form_row('Email', 'email', edit.email, required=true) }}
+                        {{ macros.form_row('Phone', 'phone', edit.phone) }}
+                        {{ macros.form_row('Student ID / Roll No.', 'student_id', edit.student_id) }}
+                        {{ macros.select_row('Status', 'status', edit.status, [{'value':'Active','label':'Active'},{'value':'Inactive','label':'Inactive'}], true) }}
+
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Update</button>
+                        <a class="btn btn-outline-secondary w-100 mt-2" href="{{ url_for('student_profile', student_id=student_id) }}">Cancel</a>
+                    </form>
+                {% else %}
+                    <p class="text-muted small mb-3">Select your student record to edit.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header fw-semibold">Preview</div>
+            <div class="card-body small">
+                {% if edit %}
+                    <table class="table table-sm">
+                        <tr><th>Name:</th><td>{{ edit.name }}</td></tr>
+                        <tr><th>Email:</th><td>{{ edit.email }}</td></tr>
+                        <tr><th>Phone:</th><td>{{ edit.phone or '—' }}</td></tr>
+                        <tr><th>Student ID:</th><td>{{ edit.student_id }}</td></tr>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

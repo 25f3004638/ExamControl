@@ -1,0 +1,111 @@
+{% extends "student/base_student.html" %}
+{% import "admin/_macros.html" as macros %}
+{% import "admin/_status.html" as status %}
+{% block title %}Student Dashboard - EMP{% endblock %}
+
+{% block content %}
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="small text-white-50">Examinations</div>
+                <div class="stat-num">{{ stats.examinations }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card bg-info text-dark">
+            <div class="card-body">
+                <div class="small text-dark-50">Available Slots</div>
+                <div class="stat-num">{{ stats.slots }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="small text-white-50">Upcoming Exams</div>
+                <div class="stat-num">{{ stats.upcoming }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card bg-secondary text-white">
+            <div class="card-body">
+                <div class="small text-white-50">Booked Slots</div>
+                <div class="stat-num">{{ stats.booked }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card mb-4">
+            <div class="card-header fw-semibold">Available Examinations</div>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Type</th>
+                            <th>Max Marks</th>
+                            <th>Status</th>
+                            <th class="text-end">Book Now</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for exam in examinations %}
+                            {% set available = exam.slots if exam.slots else none %}
+                            {% if available %}
+                                <tr>
+                                    <td>{{ exam.name }}</td>
+                                    <td>{{ exam.course_name }}</td>
+                                    <td>{{ exam.type }}</td>
+                                    <td>{{ exam.max_marks }}</td>
+                                    <td>{{ status.status_badge(exam.status) }}</td>
+                                    <td class="text-end">
+                                        {% for slot in available %}
+                                            <form method="POST" action="{{ url_for('student_book', student_id=student_id, exam_id=exam.id, slot_id=slot.id) }}"
+                                                  onsubmit="return confirm('Book this slot?')">
+                                                <button type="submit" class="btn btn-sm btn-primary">Book</button>
+                                            </form>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="6" class="text-center text-muted py-2">No slots available.</td></tr>
+                            {% endif %}
+                        {% else %}
+                            <tr><td colspan="6" class="text-center text-muted py-4">No examinations available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card mb-4">
+            <div class="card-header fw-semibold">Quick Status</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush small">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Bookings <span class="badge bg-primary">{{ stats.booked }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Upcoming Exams <span class="badge bg-info">{{ stats.upcoming }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Committed Results <span class="badge bg-warning">{{ stats.results }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Past Exams <span class="badge bg-secondary">{{ stats.past }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "admin/base_admin.html" %}
+{% import "admin/_macros.html" as macros %}
+{% import "admin/_status.html" as status %}
+{% block title %}Bookings - EMP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Bookings</h2>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">All Bookings</span>
+                <form method="GET" action="{{ url_for('admin_bookings') }}" class="d-flex gap-2" style="width:260px;">
+                    <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ q or '' }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student</th>
+                            <th>Slot</th>
+                            <th>Slot Date</th>
+                            <th>Booking Date</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in bookings %}
+                            <tr>
+                                <td>{{ b.id }}</td>
+                                <td>{{ b.student_name }}</td>
+                                <td>{{ b.slot_exam_name }}</td>
+                                <td>{{ b.slot_date }}</td>
+                                <td>{{ b.booking_date }}</td>
+                                <td>{{ status.status_badge(b.status) }}</td>
+                                <td class="text-end">
+                                    {% if b.status == 'Booked' %}
+                                        <form method="POST" action="{{ url_for('admin_booking_cancel', booking_id=b.id) }}" class="d-inline"
+                                              onsubmit="return confirm('Cancel this booking?')">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                        </form>
+                                    {% endif %}
+                                    {% if b.status in ('Cancelled','Completed') %}
+                                        <span class="text-muted small">—</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="7" class="text-center text-muted py-4">No bookings found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header fw-semibold">Booking Statistics</div>
+            <div class="card-body">
+                <p class="small text-muted">Total Bookings:</p>
+                <div class="stat-num">{{ stats.total_bookings }}</div>
+                <p class="small text-muted">Booked Slots:</p>
+                <div class="stat-num">{{ stats.booked_slots }}</div>
+                <p class="small text-muted">Cancelled:</p>
+                <div class="stat-num">{{ stats.cancelled }}</div>
+                <p class="small text-muted">Completed:</p>
+                <div class="stat-num">{{ stats.completed }}</div>
+                <hr class="my-3">
+                <p class="small text-muted">By Status:</p>
+                {% for s in status_stats %}
+                    <p class="small mb-1"><span class="badge bg-{{ s.color }}">{{ s.name }}: {{ s.count }}</span></p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block nav_links %}
+<div class="nav flex-column nav-pills" id="studentNav" role="tablist">
+    <div class="nav-header mb-2">My Dashboard</div>
+    <a class="nav-link {% if request.endpoint=='student_dashboard' %}active{% endif %}" href="{{ url_for('student_dashboard') }}">Dashboard</a>
+    <div class="nav-header mt-3">Examinations</div>
+    <a class="nav-link {% if request.endpoint=='student_examinations' %}active{% endif %}" href="{{ url_for('student_examinations') }}">Available Examinations</a>
+    <div class="nav-header mt-3">Bookings</div>
+    <a class="nav-link {% if request.endpoint=='student_slots' %}active{% endif %}" href="{{ url_for('student_slots') }}">My Slots</a>
+    <a class="nav-link {% if request.endpoint=='student_bookings' %}active{% endif %}" href="{{ url_for('student_bookings') }}">Booking History</a>
+    <div class="nav-header mt-3">Results</div>
+    <a class="nav-link {% if request.endpoint=='student_results' %}active{% endif %}" href="{{ url_for('student_results') }}">Published Results</a>
+    <div class="nav-header mt-3">Profile</div>
+    <a class="nav-link {% if request.endpoint=='student_profile' %}active{% endif %}" href="{{ url_for('student_profile') }}">Edit Profile</a>
+</div>
+{% endblock %}

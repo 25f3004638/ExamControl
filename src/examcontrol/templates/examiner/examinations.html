@@ -1,0 +1,71 @@
+{% extends "examiner/base_examiner.html" %}
+{% import "admin/_macros.html" as macros %}
+{% import "admin/_status.html" as status %}
+{% block title %}Assigned Examinations - EMP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Assigned Examinations</h2>
+</div>
+
+<div class="row g-4">
+    {% for exam in assigned_exams %}
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">{{ exam.name }}</span>
+                    {{ status.status_badge(exam.status) }}
+                </div>
+                <div class="card-body small text-muted">
+                    Course: {{ exam.course_name }} &middot; Type: {{ exam.type }}
+                </div>
+
+                {% if exam.slots %}
+                    <div class="table-responsive mt-3">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for slot in exam.slots %}
+                                    <tr>
+                                        <td>{{ slot.date }}</td>
+                                        <td>{{ slot.start_time }}-{{ slot.end_time }}</td>
+                                        <td>{{ status.status_badge(slot.status) }}</td>
+                                        <td>
+                                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('examiner_edit_slot', examiner_id=examiner_id, slot_id=slot.id) }}">Edit</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+
+                {% if exam.bookings|length > 0 %}
+                    <hr class="my-3">
+                    <p class="mb-2 fw-semibold">Booked Students ({{ exam.bookings|length }}):</p>
+                    <ul class="list-unstyled small mb-0">
+                        {% for b in exam.bookings %}
+                            <li>
+                                <a href="{{ url_for('examiner_evaluation', examiner_id=examiner_id, exam_id=exam.id, booking_id=b.id) }}"
+                                   class="text-decoration-none">{{ b.student_name }}</a>
+                                &middot; <span class="text-muted">{{ b.student_id }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">No examinations assigned to you yet.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% macro list_view(title, search_url, search_value, columns, rows, empty_msg="No records found.", actions=None) %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">{{ title }}</span>
+        <form method="GET" action="{{ search_url }}" class="d-flex gap-2" style="width:280px;">
+            <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ search_value or '' }}">
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+            <thead>
+                <tr>
+                    {% for col in columns %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                    {% if actions %}<th class="text-end">Actions</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% if rows and rows|length > 0 %}
+                    {% for row in rows %}
+                        <tr>
+                            {% for col in columns %}
+                                <td>{{ row[col] }}</td>
+                            {% endfor %}
+                            {% if actions %}
+                                <td class="text-end">
+                                    {% for action in actions %}
+                                        {% if action.url %}
+                                            <a class="btn btn-sm btn-outline-primary" href="{{ action.url }}">{{ action.label }}</a>
+                                        {% else %}
+                                            <form method="POST" action="{{ action.post_url }}" class="d-inline">
+                                                {% if action.confirm %}
+                                                    <input type="hidden" name="confirm" value="1">
+                                                {% endif %}
+                                                <button type="submit" class="btn btn-sm btn-{{ action.btn or 'outline-secondary' }}"
+                                                        onclick="return confirm('{{ action.confirm_msg or 'Are you sure?' }}')">
+                                                    {{ action.label }}
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="{{ columns|length + (1 if actions else 0) }}" class="text-center text-muted py-4">{{ empty_msg }}</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro form_row(label, name, value, type='text', required=false, placeholder='', rows=0) %}
+<div class="mb-3">
+    <label class="form-label small fw-semibold">{{ label }}</label>
+    {% if rows > 0 %}
+        <textarea name="{{ name }}" class="form-control" rows="{{ rows }}" placeholder="{{ placeholder }}"
+                  {% if required %}required{% endif %}>{{ value or '' }}</textarea>
+    {% else %}
+        <input type="{{ type }}" name="{{ name }}" class="form-control" placeholder="{{ placeholder }}"
+               value="{{ value or '' }}" {% if required %}required{% endif %}>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro select_row(label, name, value, options, required=false) %}
+<div class="mb-3">
+    <label class="form-label small fw-semibold">{{ label }}</label>
+    <select name="{{ name }}" class="form-select" {% if required %}required{% endif %}>
+        <option value="">Select...</option>
+        {% for opt in options %}
+            <option value="{{ opt.value }}" {% if opt.value == value|string %}selected{% endif %}>{{ opt.label }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}

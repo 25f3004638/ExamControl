@@ -1,0 +1,25 @@
+{% macro status_badge(status) %}
+{% set m = {
+  'Draft':'secondary',
+  'Slot Creation':'info',
+  'Booking Open':'primary',
+  'Closed':'warning',
+  'Completed':'success',
+  'Available':'success',
+  'Full':'danger',
+  'Cancelled':'dark',
+  'Completed':'success',
+  'Booked':'primary',
+  'Cancelled':'dark',
+  'Completed':'success',
+  'Active':'success',
+  'Inactive':'secondary',
+  'Pending':'warning',
+  'Approved':'success',
+  'Rejected':'danger',
+  'Open':'success',
+  'Closed':'danger'
+} %}
+{% set color = m.get(status, 'secondary') %}
+<span class="badge bg-{{ color }} badge-status">{{ status }}</span>
+{% endmacro %}

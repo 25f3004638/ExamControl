@@ -1,0 +1,52 @@
+{% extends "student/base_student.html" %}
+{% import "admin/_status.html" as status %}
+{% block title %}Available Examinations - EMP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Available Examinations</h2>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Type</th>
+                    <th>Max Marks</th>
+                    <th>Status</th>
+                    <th class="text-end">Book Now</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exam in examinations %}
+                    {% set available = exam.slots if exam.slots else none %}
+                    {% if available %}
+                        <tr>
+                            <td>{{ exam.name }}</td>
+                            <td>{{ exam.course_name }}</td>
+                            <td>{{ exam.type }}</td>
+                            <td>{{ exam.max_marks }}</td>
+                            <td>{{ status.status_badge(exam.status) }}</td>
+                            <td class="text-end">
+                                {% for slot in available %}
+                                    <form method="POST" action="{{ url_for('student_book', student_id=student_id, exam_id=exam.id, slot_id=slot.id) }}"
+                                          onsubmit="return confirm('Book this slot?')">
+                                        <button type="submit" class="btn btn-sm btn-primary">Book</button>
+                                    </form>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="6" class="text-center text-muted py-2">No slots available.</td></tr>
+                    {% endif %}
+                {% else %}
+                    <tr><td colspan="6" class="text-center text-muted py-4">No examinations found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
