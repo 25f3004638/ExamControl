@@ -9,7 +9,7 @@ DEFAULT_ADMIN_NAME = os.environ.get("EMP_ADMIN_NAME", "Super Admin")
 
 def create_app():
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    instance_dir = os.path.join(base_dir, "..", "..", "instance")
+    instance_dir = os.path.join(base_dir, "instance")
     os.makedirs(instance_dir, exist_ok=True)
     db_path = os.path.join(instance_dir, "examcontrol.sqlite")
 

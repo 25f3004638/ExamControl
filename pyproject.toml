@@ -1,7 +1,7 @@
 [project]
 name = "examcontrol"
 version = "0.1.0"
-description = "Add your description here"
+description = "Examination Management Portal"
 readme = "README.md"
 authors = [
     { name = "Salil Rath", email = "salil_programming@outlook.com" }
@@ -12,10 +12,3 @@ dependencies = [
     "flask-sqlalchemy>=3.1.1",
     "flask-login>=0.6.3",
 ]
-
-[project.scripts]
-examcontrol = "examcontrol:main"
-
-[build-system]
-requires = ["uv_build>=0.13.6,<0.14.0"]
-build-backend = "uv_build"
