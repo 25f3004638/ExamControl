@@ -28,7 +28,7 @@
                         <td>{{ status.status_badge(b.status) }}</td>
                         <td class="text-end">
                             {% if b.status == 'Booked' and booking_open %}
-                                <form method="POST" action="{{ url_for('student_cancel', student_id=student_id, booking_id=b.id) }}"
+                                <form method="POST" action="{{ url_for('student.cancel', booking_id=b.id) }}"
                                       onsubmit="return confirm('Cancel this booking?')">
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
                                 </form>
@@ -36,7 +36,7 @@
                                 —
                             {% endif %}
                             {% if b.results %}
-                                <a class="btn btn-sm btn-outline-primary ms-1" href="{{ url_for('student_result', student_id=student_id, exam_id=b.exam_id, booking_id=b.id) }}">View Result</a>
+                                <a class="btn btn-sm btn-outline-primary ms-1" href="{{ url_for('student.result', booking_id=b.id) }}">View Result</a>
                             {% endif %}
                         </td>
                     </tr>

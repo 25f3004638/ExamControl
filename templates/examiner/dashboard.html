@@ -52,7 +52,7 @@
         <small class="text-muted">Only available during slot creation period</small>
     </div>
 
-    <form method="POST" action="{{ url_for('examiner_create_slot') }}">
+    <form method="POST" action="{{ url_for('examiner.slot_create') }}">
         <div class="row g-3">
             <div class="col-md-6">
                 {{ macros.select_row('Examination', 'exam_id', '', exams_options, true) }}

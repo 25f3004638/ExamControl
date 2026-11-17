@@ -38,7 +38,7 @@
                                         <td>{{ slot.start_time }}-{{ slot.end_time }}</td>
                                         <td>{{ status.status_badge(slot.status) }}</td>
                                         <td>
-                                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('examiner_edit_slot', examiner_id=examiner_id, slot_id=slot.id) }}">Edit</a>
+                                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('examiner.slot_edit', slot_id=slot.id) }}">Edit</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -53,7 +53,7 @@
                     <ul class="list-unstyled small mb-0">
                         {% for b in exam.bookings %}
                             <li>
-                                <a href="{{ url_for('examiner_evaluation', examiner_id=examiner_id, exam_id=exam.id, booking_id=b.id) }}"
+                                <a href="{{ url_for('examiner.evaluations') }}"
                                    class="text-decoration-none">{{ b.student_name }}</a>
                                 &middot; <span class="text-muted">{{ b.student_id }}</span>
                             </li>

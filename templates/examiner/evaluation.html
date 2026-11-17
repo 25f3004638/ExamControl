@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <p class="card-text small text-muted">Booking: {{ ev.booking_id }}</p>
 
-                    <form method="POST" action="{{ url_for('examiner_submit_evaluation', examiner_id=examiner_id, exam_id=ev.exam_id, booking_id=ev.booking_id) }}">
+                    <form method="POST" action="{{ url_for('examiner.submit_evaluation', booking_id=ev.booking_id) }}">
                         {% if ev.rubrics %}
                             {% for rubric in ev.rubrics %}
                                 <hr class="my-3">
@@ -28,7 +28,12 @@
                                     <tbody>
                                         <tr>
                                             <td>{{ rubric.max_marks }}</td>
-                                            <td>{{ rubric.marks }}</td>
+                                            <td>
+                                                <input type="number" name="marks_{{ rubric.rubric_id }}"
+                                                       class="form-control form-control-sm"
+                                                       min="0" max="{{ rubric.max_marks }}" step="0.5"
+                                                       value="{{ rubric.marks }}" required>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">

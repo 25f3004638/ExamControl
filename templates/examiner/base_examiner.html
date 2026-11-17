@@ -2,12 +2,12 @@
 {% block nav_links %}
 <div class="nav flex-column nav-pills" id="examinerNav" role="tablist">
     <div class="nav-header mb-2">My Dashboard</div>
-    <a class="nav-link {% if request.endpoint=='examiner_dashboard' %}active{% endif %}" href="{{ url_for('examiner_dashboard') }}">Dashboard</a>
+    <a class="nav-link {% if request.endpoint=='examiner.dashboard' %}active{% endif %}" href="{{ url_for('examiner.dashboard') }}">Dashboard</a>
     <div class="nav-header mt-3">Examinations</div>
-    <a class="nav-link {% if request.endpoint=='examiner_examinations' %}active{% endif %}" href="{{ url_for('examiner_examinations') }}">Assigned Examinations</a>
-    <a class="nav-link {% if request.endpoint=='examiner_slots' %}active{% endif %}" href="{{ url_for('examiner_slots') }}">My Slots</a>
+    <a class="nav-link {% if request.endpoint=='examiner.examinations' %}active{% endif %}" href="{{ url_for('examiner.examinations') }}">Assigned Examinations</a>
+    <a class="nav-link {% if request.endpoint=='examiner.slots' %}active{% endif %}" href="{{ url_for('examiner.slots') }}">My Slots</a>
     <div class="nav-header mt-3">Evaluation</div>
-    <a class="nav-link {% if request.endpoint=='examiner_evaluations' %}active{% endif %}" href="{{ url_for('examiner_evaluations') }}">Evaluate Students</a>
-    <a class="nav-link {% if request.endpoint=='examiner_results' %}active{% endif %}" href="{{ url_for('examiner_results') }}">Submitted Results</a>
+    <a class="nav-link {% if request.endpoint=='examiner.evaluations' %}active{% endif %}" href="{{ url_for('examiner.evaluations') }}">Evaluate Students</a>
+    <a class="nav-link {% if request.endpoint=='examiner.results' %}active{% endif %}" href="{{ url_for('examiner.results') }}">Submitted Results</a>
 </div>
 {% endblock %}
