@@ -54,7 +54,7 @@
 </div>
 {% endmacro %}
 
-{% macro form_row(label, name, value, type='text', required=false, placeholder='', rows=0) %}
+{% macro form_row(label, name, value, type='text', required=false, placeholder='', rows=0, step=None) %}
 <div class="mb-3">
     <label class="form-label small fw-semibold">{{ label }}</label>
     {% if rows > 0 %}
@@ -62,7 +62,7 @@
                   {% if required %}required{% endif %}>{{ value or '' }}</textarea>
     {% else %}
         <input type="{{ type }}" name="{{ name }}" class="form-control" placeholder="{{ placeholder }}"
-               value="{{ value or '' }}" {% if required %}required{% endif %}>
+               value="{{ value or '' }}" {% if step %}step="{{ step }}"{% endif %} {% if required %}required{% endif %}>
     {% endif %}
 </div>
 {% endmacro %}

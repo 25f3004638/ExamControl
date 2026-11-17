@@ -10,7 +10,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span class="fw-semibold">All Slots</span>
-        <form method="GET" action="{{ url_for('admin_slots') }}" class="d-flex gap-2" style="width:260px;">
+        <form method="GET" action="{{ url_for('admin.slots') }}" class="d-flex gap-2" style="width:260px;">
             <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ q or '' }}">
             <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
         </form>
@@ -44,12 +44,12 @@
                         <td>{{ s.booked }}</td>
                         <td>{{ status.status_badge(s.status) }}</td>
                         <td class="text-end">
-                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_slot_edit', slot_id=s.id) }}">Edit</a>
-                            <form method="POST" action="{{ url_for('admin_slot_reschedule', slot_id=s.id) }}" class="d-inline mb-1"
+                            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.slot_edit', slot_id=s.id) }}">Edit</a>
+                            <form method="POST" action="{{ url_for('admin.slot_reschedule', slot_id=s.id) }}" class="d-inline mb-1"
                                   onsubmit="return confirm('Reschedule this slot?')">
                                 <button type="submit" class="btn btn-sm btn-outline-warning">Reschedule</button>
                             </form>
-                            <form method="POST" action="{{ url_for('admin_slot_change_examiner', slot_id=s.id) }}" class="d-inline"
+                            <form method="POST" action="{{ url_for('admin.slot_change_examiner', slot_id=s.id) }}" class="d-inline"
                                   onsubmit="return confirm('Change examiner for this slot?')">
                                 <button type="submit" class="btn btn-sm btn-outline-info">Change Examiner</button>
                             </form>

@@ -14,7 +14,7 @@
             <div class="card-header fw-semibold">{{ 'Edit Examiner' if edit else 'Examiner Profile' }}</div>
             <div class="card-body p-4">
                 {% if edit %}
-                    <form method="POST" action="{{ url_for('admin_examiners') }}">
+                    <form method="POST" action="{{ url_for('admin.examiners') }}">
                         <input type="hidden" name="action" value="edit">
                         <input type="hidden" name="examiner_id" value="{{ edit.id }}">
 
@@ -25,7 +25,7 @@
                         {{ macros.select_row('Status', 'status', edit.status, [{'value':'Pending','label':'Pending'},{'value':'Approved','label':'Approved'},{'value':'Inactive','label':'Inactive'},{'value':'Rejected','label':'Rejected'}], true) }}
 
                         <button type="submit" class="btn btn-primary w-100">Update</button>
-                        <a class="btn btn-outline-secondary w-100 mt-2" href="{{ url_for('admin_examiners') }}">Cancel</a>
+                        <a class="btn btn-outline-secondary w-100 mt-2" href="{{ url_for('admin.examiners') }}">Cancel</a>
                     </form>
                 {% else %}
                     <p class="text-muted small">Select an examiner from the list to edit their details.</p>
@@ -38,7 +38,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="fw-semibold">All Examiners</span>
-                <form method="GET" action="{{ url_for('admin_examiners') }}" class="d-flex gap-2" style="width:260px;">
+                <form method="GET" action="{{ url_for('admin.examiners') }}" class="d-flex gap-2" style="width:260px;">
                     <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ q or '' }}">
                     <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
                 </form>
@@ -65,18 +65,18 @@
                                 <td>{{ status.status_badge(e.status) }}</td>
                                 <td class="text-end">
                                     {% if e.status == 'Pending' %}
-                                        <form method="POST" action="{{ url_for('admin_examiner_approve', examiner_id=e.id) }}" class="d-inline mb-1"
+                                        <form method="POST" action="{{ url_for('admin.examiner_approve', examiner_id=e.id) }}" class="d-inline mb-1"
                                               onsubmit="return confirm('Approve this examiner?')">
                                             <button type="submit" class="btn btn-sm btn-success">Approve</button>
                                         </form>
                                     {% endif %}
                                     {% if e.status == 'Approved' %}
-                                        <form method="POST" action="{{ url_for('admin_examiner_deactivate', examiner_id=e.id) }}" class="d-inline mb-1"
+                                        <form method="POST" action="{{ url_for('admin.examiner_deactivate', examiner_id=e.id) }}" class="d-inline mb-1"
                                               onsubmit="return confirm('Deactivate this examiner?')">
                                             <button type="submit" class="btn btn-sm btn-outline-danger">Deactivate</button>
                                         </form>
                                     {% endif %}
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_examiner_edit', examiner_id=e.id) }}">Edit</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.examiner_edit', examiner_id=e.id) }}">Edit</a>
                                 </td>
                             </tr>
                         {% else %}

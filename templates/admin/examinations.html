@@ -13,7 +13,7 @@
         <div class="card">
             <div class="card-header fw-semibold">{{ 'Edit Examination' if edit else 'Create Examination' }}</div>
             <div class="card-body p-4">
-                <form method="POST" action="{{ url_for('admin_examinations') }}">
+                <form method="POST" action="{{ url_for('admin.examinations') }}">
                     <input type="hidden" name="action" value="{{ 'edit' if edit else 'create' }}">
                     {% if edit %}<input type="hidden" name="exam_id" value="{{ edit.id }}">{% endif %}
 
@@ -30,7 +30,7 @@
 
                     <button type="submit" class="btn btn-primary w-100">{{ 'Update' if edit else 'Create' }}</button>
                     {% if edit %}
-                        <a class="btn btn-outline-secondary w-100 mt-2" href="{{ url_for('admin_examinations') }}">Cancel</a>
+                        <a class="btn btn-outline-secondary w-100 mt-2" href="{{ url_for('admin.examinations') }}">Cancel</a>
                     {% endif %}
                 </form>
             </div>
@@ -41,7 +41,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="fw-semibold">All Examinations</span>
-                <form method="GET" action="{{ url_for('admin_examinations') }}" class="d-flex gap-2" style="width:260px;">
+                <form method="GET" action="{{ url_for('admin.examinations') }}" class="d-flex gap-2" style="width:260px;">
                     <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ q or '' }}">
                     <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
                 </form>
@@ -69,8 +69,8 @@
                                 <td>{{ e.max_marks }}</td>
                                 <td>{{ status.status_badge(e.status) }}</td>
                                 <td class="text-end">
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_exam_edit', exam_id=e.id) }}">Edit</a>
-                                    <form method="POST" action="{{ url_for('admin_exam_delete', exam_id=e.id) }}" class="d-inline"
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.exam_edit', exam_id=e.id) }}">Edit</a>
+                                    <form method="POST" action="{{ url_for('admin.exam_delete', exam_id=e.id) }}" class="d-inline"
                                           onsubmit="return confirm('Delete this examination?')">
                                         <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                                     </form>
