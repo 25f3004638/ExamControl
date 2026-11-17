@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 
 from models.models import (
     db, Examiner, Student, Course, Department,
-    Examination, Rubric, ExaminationSlot, Booking
+    Examination, Rubric, ExaminationSlot, Booking, Evaluation
 )
 
 admin_bp = Blueprint('admin', __name__)
@@ -724,3 +724,53 @@ def booking_period():
 
     db.session.commit()
     return redirect(url_for('admin.timelines'))
+
+
+# ---------------------------------------------------------------------------
+# Results — view all submitted/published evaluations and publish them
+# ---------------------------------------------------------------------------
+
+@admin_bp.route('/results')
+@login_required
+def results():
+    if not admin_only():
+        return redirect(url_for('auth.login'))
+
+    all_bookings = Booking.query.all()
+    results_data = []
+
+    for b in all_bookings:
+        ev = b.evaluation
+        # only show bookings that have an evaluation record
+        if not ev:
+            continue
+
+        results_data.append({
+            'booking_id': b.id,
+            'evaluation_id': ev.id,
+            'student_name': b.student.name,
+            'exam_name': b.slot.exam.name,
+            'slot_date': b.slot.date,
+            'total_marks': ev.total_marks if ev.total_marks is not None else '—',
+            'eval_status': ev.status.capitalize(),
+        })
+
+    return render_template('admin/results.html', results=results_data)
+
+
+@admin_bp.route('/results/publish/<int:evaluation_id>', methods=['POST'])
+@login_required
+def publish_result(evaluation_id):
+    if not admin_only():
+        return redirect(url_for('auth.login'))
+
+    ev = Evaluation.query.get_or_404(evaluation_id)
+
+    if ev.status != 'submitted':
+        flash('Only submitted evaluations can be published.', 'warning')
+        return redirect(url_for('admin.results'))
+
+    ev.status = 'published'
+    db.session.commit()
+    flash('Result published — student can now see it.', 'success')
+    return redirect(url_for('admin.results'))
