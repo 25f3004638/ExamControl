@@ -2,18 +2,20 @@
 {% block nav_links %}
 <div class="nav flex-column nav-pills" id="adminNav" role="tablist">
     <div class="nav-header mb-2">Examination Management</div>
-    <a class="nav-link {% if request.endpoint=='admin_dashboard' %}active{% endif %}" href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a class="nav-link {% if request.endpoint=='admin.dashboard' %}active{% endif %}" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+
     <div class="nav-header mt-3">Courses &amp; Examinations</div>
-    <a class="nav-link {% if request.endpoint=='admin_courses' %}active{% endif %}" href="{{ url_for('admin_courses') }}">Courses</a>
-    <a class="nav-link {% if request.endpoint=='admin_examinations' %}active{% endif %}" href="{{ url_for('admin_examinations') }}">Examinations</a>
-    <a class="nav-link {% if request.endpoint=='admin_rubrics' %}active{% endif %}" href="{{ url_for('admin_rubrics') }}">Rubrics</a>
+    <a class="nav-link {% if request.endpoint=='admin.courses' %}active{% endif %}" href="{{ url_for('admin.courses') }}">Courses</a>
+    <a class="nav-link {% if request.endpoint=='admin.examinations' %}active{% endif %}" href="{{ url_for('admin.examinations') }}">Examinations</a>
+    <a class="nav-link {% if request.endpoint=='admin.rubrics' %}active{% endif %}" href="{{ url_for('admin.rubrics') }}">Rubrics</a>
+
     <div class="nav-header mt-3">People &amp; Bookings</div>
-    <a class="nav-link {% if request.endpoint=='admin_examiners' %}active{% endif %}" href="{{ url_for('admin_examiners') }}">Examiners</a>
-    <a class="nav-link {% if request.endpoint=='admin_students' %}active{% endif %}" href="{{ url_for('admin_students') }}">Students</a>
-    <a class="nav-link {% if request.endpoint=='admin_slots' %}active{% endif %}" href="{{ url_for('admin_slots') }}">Slots</a>
-    <a class="nav-link {% if request.endpoint=='admin_bookings' %}active{% endif %}" href="{{ url_for('admin_bookings') }}">Bookings</a>
+    <a class="nav-link {% if request.endpoint=='admin.examiners' %}active{% endif %}" href="{{ url_for('admin.examiners') }}">Examiners</a>
+    <a class="nav-link {% if request.endpoint=='admin.students' %}active{% endif %}" href="{{ url_for('admin.students') }}">Students</a>
+    <a class="nav-link {% if request.endpoint=='admin.slots' %}active{% endif %}" href="{{ url_for('admin.slots') }}">Slots</a>
+    <a class="nav-link {% if request.endpoint=='admin.bookings' %}active{% endif %}" href="{{ url_for('admin.bookings') }}">Bookings</a>
+
     <div class="nav-header mt-3">Timelines</div>
-    <a class="nav-link {% if request.endpoint=='admin_timelines' %}active{% endif %}" href="{{ url_for('admin_timelines') }}">Slot Creation Period</a>
-    <a class="nav-link {% if request.endpoint=='admin_booking_period' %}active{% endif %}" href="{{ url_for('admin_booking_period') }}">Booking Period</a>
+    <a class="nav-link {% if request.endpoint=='admin.timelines' %}active{% endif %}" href="{{ url_for('admin.timelines') }}">Manage Timelines</a>
 </div>
 {% endblock %}

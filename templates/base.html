@@ -24,11 +24,11 @@
 
 <nav class="navbar navbar-dark bg-dark px-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('home') }}">EMP</a>
+        <a class="navbar-brand" href="{{ url_for('auth.home') }}">EMP</a>
         <div class="d-flex align-items-center gap-2">
-            {% if current_user %}
-                <span class="text-secondary small d-none d-sm-inline">{{ current_user.name }} ({{ current_user.role|capitalize }})</span>
-                <a class="btn btn-outline-light btn-sm" href="{{ url_for('logout') }}">Logout</a>
+            {% if current_user.is_authenticated %}
+                <span class="text-secondary small d-none d-sm-inline">{{ current_user.email }} ({{ current_user.role|capitalize }})</span>
+                <a class="btn btn-outline-light btn-sm" href="{{ url_for('auth.logout') }}">Logout</a>
             {% endif %}
         </div>
     </div>
@@ -60,7 +60,7 @@
 </div>
 
 <footer class="footer text-center py-2 mt-auto small">
-    Examination Management Portal &middot; {{ current_user.role|capitalize if current_user else '' }}
+    Examination Management Portal &middot; {{ current_user.role|capitalize if current_user.is_authenticated else '' }}
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
