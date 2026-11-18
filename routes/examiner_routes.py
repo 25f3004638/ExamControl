@@ -379,9 +379,21 @@ def slot_edit(slot_id):
         db.session.commit()
         flash('Slot updated.', 'success')
         return redirect(url_for('examiner.slots'))
-    
 
-    return render_template('examiner/slots.html', edit_slot=slot, my_slots=[])
+    my_slots = []
+    for s in examiner.slots:
+        my_slots.append({
+            'id': s.id,
+            'exam_name': s.exam.name,
+            'date': s.date,
+            'start_time': s.start_time,
+            'end_time': s.end_time,
+            'capacity': s.max_capacity,
+            'booked': s.max_capacity - s.available_seats,
+            'status': s.status.capitalize(),
+        })
+
+    return render_template('examiner/slots.html', edit_slot=slot, my_slots=my_slots)
 
 
 # ------------------------------------------------------------------

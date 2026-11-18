@@ -631,9 +631,91 @@ def slot_edit(slot_id):
         return redirect(url_for('auth.login'))
     
 
-    ExaminationSlot.query.get_or_404(slot_id)
+    slot = ExaminationSlot.query.get_or_404(slot_id)
 
-    return redirect(url_for('admin.slots'))
+    if request.method == 'POST':
+        date_str = request.form.get('date', '').strip()
+        start_str = request.form.get('start_time', '').strip()
+        end_str = request.form.get('end_time', '').strip()
+        capacity = request.form.get('capacity', type=int)
+        examiner_id = request.form.get('examiner_id', type=int)
+        status_val = request.form.get('status', '').strip().lower()
+
+        if date_str:
+            try:
+                slot.date = datetime.strptime(date_str, '%Y-%m-%d').date()
+            except ValueError:
+                pass
+
+        if start_str:
+            try:
+                slot.start_time = datetime.strptime(start_str, '%H:%M').time()
+            except ValueError:
+                pass
+
+        if end_str:
+            try:
+                slot.end_time = datetime.strptime(end_str, '%H:%M').time()
+            except ValueError:
+                pass
+
+        if examiner_id:
+            slot.examiner_id = examiner_id
+
+        if status_val in ['available', 'full', 'cancelled', 'completed']:
+            slot.status = status_val
+
+        if capacity:
+            booked_count = slot.max_capacity - slot.available_seats
+            if capacity < booked_count:
+                flash(f'Capacity cannot be less than currently booked seats ({booked_count}).', 'danger')
+                return redirect(url_for('admin.slot_edit', slot_id=slot_id))
+
+            slot.max_capacity = capacity
+            slot.available_seats = capacity - booked_count
+            if slot.available_seats == 0 and slot.status == 'available':
+                slot.status = 'full'
+            elif slot.available_seats > 0 and slot.status == 'full':
+                slot.status = 'available'
+
+        db.session.commit()
+        flash('Slot updated successfully.', 'success')
+        return redirect(url_for('admin.slots'))
+
+    q = request.args.get('q', '').strip()
+    query = ExaminationSlot.query
+    if q:
+        query = query.join(Examination).filter(Examination.name.ilike(f'%{q}%'))
+
+    slot_items = []
+    for s in query.all():
+        booked_count = Booking.query.filter_by(slot_id=s.id, status='booked').count()
+        slot_items.append({
+            'id': s.id,
+            'exam_name': s.exam.name if s.exam else 'N/A',
+            'examiner_name': s.examiner.name if s.examiner else 'N/A',
+            'date': s.date.strftime('%Y-%m-%d') if s.date else '',
+            'start_time': s.start_time.strftime('%H:%M') if s.start_time else '',
+            'end_time': s.end_time.strftime('%H:%M') if s.end_time else '',
+            'capacity': s.max_capacity,
+            'booked': booked_count,
+            'status': s.status.capitalize()
+        })
+
+    examiners_options = [{'value': ex.id, 'label': f"{ex.name} ({ex.employee_id})"} for ex in Examiner.query.filter_by(status='approved').all()]
+
+    edit_data = {
+        'id': slot.id,
+        'exam_name': slot.exam.name if slot.exam else '',
+        'date': slot.date.strftime('%Y-%m-%d') if slot.date else '',
+        'start_time': slot.start_time.strftime('%H:%M') if slot.start_time else '',
+        'end_time': slot.end_time.strftime('%H:%M') if slot.end_time else '',
+        'capacity': slot.max_capacity,
+        'examiner_id': slot.examiner_id,
+        'status': slot.status.capitalize(),
+    }
+
+    return render_template('admin/slots.html', slots=slot_items, edit=edit_data, examiners_options=examiners_options, q=q)
 
 
 @admin_bp.route('/slots/reschedule/<int:slot_id>', methods=['POST'])
