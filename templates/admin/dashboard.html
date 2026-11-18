@@ -1,94 +1,144 @@
 {% extends "admin/base_admin.html" %}
-{% block title %}Admin Dashboard - EMP{% endblock %}
+{% block title %}Admin Dashboard - EMP{% endblock %}  
+
+
+
 
 {% block content %}
+
+
+
 <div class="d-flex justify-content-between align-items-center mb-4">
+
     <h2>Admin Dashboard</h2>
     <span class="badge bg-dark">Superuser</span>
+
 </div>
 
 <div class="row g-3 mb-4">
     <div class="col-md-6 col-lg-3">
+
         <div class="card bg-primary text-white">
             <div class="card-body">
                 <div class="small text-white-50">Courses</div>
+
                 <div class="stat-num">{{ stats.courses }}</div>
             </div>
         </div>
     </div>
+
     <div class="col-md-6 col-lg-3">
         <div class="card bg-info text-dark">
+
             <div class="card-body">
+
                 <div class="small text-dark-50">Examinations</div>
                 <div class="stat-num">{{ stats.examinations }}</div>
             </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
+
         <div class="card bg-success text-white">
+
+
             <div class="card-body">
                 <div class="small text-white-50">Examiners</div>
                 <div class="stat-num">{{ stats.examiners }}</div>
             </div>
+
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
         <div class="card bg-warning text-dark">
+
             <div class="card-body">
+
                 <div class="small text-dark-50">Students</div>
+
                 <div class="stat-num">{{ stats.students }}</div>
+
             </div>
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
         <div class="card bg-secondary text-white">
+
+
             <div class="card-body">
                 <div class="small text-white-50">Slots</div>
+
                 <div class="stat-num">{{ stats.slots }}</div>
             </div>
+
         </div>
     </div>
+
     <div class="col-md-6 col-lg-3">
         <div class="card bg-danger text-white">
             <div class="card-body">
+
                 <div class="small text-white-50">Bookings</div>
+
                 <div class="stat-num">{{ stats.bookings }}</div>
+
             </div>
         </div>
+
     </div>
 </div>
+
 
 <div class="row">
     <div class="col-lg-6">
         <div class="card">
+
             <div class="card-header fw-semibold">Quick Actions</div>
+
             <div class="card-body">
                 <a class="btn btn-outline-primary btn-sm mb-2 me-2" href="{{ url_for('admin.courses') }}">Manage Courses</a>
+              
                 <a class="btn btn-outline-primary btn-sm mb-2 me-2" href="{{ url_for('admin.examinations') }}">Manage Examinations</a>
-                <a class="btn btn-outline-primary btn-sm mb-2 me-2" href="{{ url_for('admin.rubrics') }}">Manage Rubrics</a>
+                <a class="btn btn-outline-primary btn-sm mb-2 me-2"   href="{{ url_for('admin.rubrics') }}">Manage Rubrics</a>
                 <a class="btn btn-outline-primary btn-sm mb-2 me-2" href="{{ url_for('admin.examiners') }}">Manage Examiners</a>
+           
                 <a class="btn btn-outline-primary btn-sm mb-2 me-2" href="{{ url_for('admin.students') }}">Manage Students</a>
-                <a class="btn btn-outline-primary btn-sm mb-2 me-2" href="{{ url_for('admin.slots') }}">View Slots</a>
-                <a class="btn btn-outline-primary btn-sm mb-2 me-2" href="{{ url_for('admin.bookings') }}">View Bookings</a>
+                <a class="btn btn-outline-primary btn-sm mb-2 me-2"  href="{{ url_for('admin.slots') }}">View Slots</a>
+                
+                
+                <a class="btn btn-outline-primary btn-sm mb-2 me-2"   href="{{ url_for('admin.bookings') }}">View Bookings</a>
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6"> 
+
         <div class="card">
             <div class="card-header fw-semibold">Timeline Controls</div>
-            <div class="card-body">
+
+            <div class="card-body"> 
+
                 {% if slot_creation_open %}
                     <span class="badge bg-success">Slot Creation Open</span>
+
                 {% else %}
                     <span class="badge bg-danger">Slot Creation Closed</span>
                 {% endif %}
+
                 {% if booking_open %}
                     <span class="badge bg-success">Student Booking Open</span>
+
                 {% else %}
+
                     <span class="badge bg-danger">Student Booking Closed</span>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
 {% endblock %}

@@ -1,4 +1,7 @@
 {% extends "admin/base_admin.html" %}
+
+
+
 {% import "admin/_status.html" as status %}
 {% block title %}Examination Slots - EMP{% endblock %}
 
@@ -10,9 +13,13 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span class="fw-semibold">All Slots</span>
+       
         <form method="GET" action="{{ url_for('admin.slots') }}" class="d-flex gap-2" style="width:260px;">
+      
             <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ q or '' }}">
+            
             <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
+      
         </form>
     </div>
     <div class="table-responsive">
@@ -23,10 +30,12 @@
                     <th>Examination</th>
                     <th>Examiner</th>
                     <th>Date</th>
+                 
                     <th>Start</th>
                     <th>End</th>
                     <th>Capacity</th>
                     <th>Booked</th>
+                
                     <th>Status</th>
                     <th class="text-end">Actions</th>
                 </tr>
@@ -34,32 +43,42 @@
             <tbody>
                 {% for s in slots %}
                     <tr>
-                        <td>{{ s.id }}</td>
-                        <td>{{ s.exam_name }}</td>
-                        <td>{{ s.examiner_name }}</td>
+                        <td>{{ s.id }}</td> 
+                        <td>{{ s.exam_name }}</td> 
+                        <td>{{ s.examiner_name }}</td>  
                         <td>{{ s.date }}</td>
+                
                         <td>{{ s.start_time }}</td>
-                        <td>{{ s.end_time }}</td>
-                        <td>{{ s.capacity }}</td>
+                        <td>{{ s.end_time }}</td>               
+                        <td>{{ s.capacity }}</td>  
+               
                         <td>{{ s.booked }}</td>
                         <td>{{ status.status_badge(s.status) }}</td>
                         <td class="text-end">
                             <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.slot_edit', slot_id=s.id) }}">Edit</a>
                             <form method="POST" action="{{ url_for('admin.slot_reschedule', slot_id=s.id) }}" class="d-inline mb-1"
                                   onsubmit="return confirm('Reschedule this slot?')">
-                                <button type="submit" class="btn btn-sm btn-outline-warning">Reschedule</button>
+                        
+                                  <button type="submit" class="btn btn-sm btn-outline-warning">Reschedule</button>
+                       
                             </form>
                             <form method="POST" action="{{ url_for('admin.slot_change_examiner', slot_id=s.id) }}" class="d-inline"
                                   onsubmit="return confirm('Change examiner for this slot?')">
                                 <button type="submit" class="btn btn-sm btn-outline-info">Change Examiner</button>
+                         
                             </form>
                         </td>
                     </tr>
                 {% else %}
+
+
+                
                     <tr><td colspan="10" class="text-center text-muted py-4">No slots found.</td></tr>
-                {% endfor %}
+              
+                    {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
 {% endblock %}

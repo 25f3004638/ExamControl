@@ -9,46 +9,62 @@
 
 <div class="row g-4">
     <div class="col-lg-5">
+
+
         <div class="card">
             <div class="card-header fw-semibold">{{ 'Edit Rubric' if edit else 'Create Rubric' }}</div>
             <div class="card-body p-4">
                 <form method="POST" action="{{ url_for('admin.rubrics') }}">
+
                     <input type="hidden" name="action" value="{{ 'edit' if edit else 'create' }}">
                     {% if edit %}<input type="hidden" name="rubric_id" value="{{ edit.id }}">{% endif %}
 
+
                     {{ macros.select_row('Examination', 'exam_id', edit.exam_id, exams_options, true) }}
                     {{ macros.form_row('Criterion Name', 'criterion_name', edit.criterion_name, required=true) }}
+              
                     {{ macros.form_row('Maximum Marks', 'max_marks', edit.max_marks, type='number', required=true) }}
                     {{ macros.form_row('Weightage', 'weightage', edit.weightage, type='number', step='0.01', required=true) }}
                     {{ macros.form_row('Description', 'description', edit.description, rows=3) }}
 
+
                     <button type="submit" class="btn btn-primary w-100">{{ 'Update' if edit else 'Create' }}</button>
+           
                     {% if edit %}
                         <a class="btn btn-outline-secondary w-100 mt-2" href="{{ url_for('admin.rubrics') }}">Cancel</a>
-                    {% endif %}
+          
+                        {% endif %}
                 </form>
             </div>
         </div>
+
     </div>
 
     <div class="col-lg-7">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
+      
                 <span class="fw-semibold">All Rubrics</span>
                 <form method="GET" action="{{ url_for('admin.rubrics') }}" class="d-flex gap-2" style="width:260px;">
+                
                     <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ q or '' }}">
+        
                     <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
+           
                 </form>
             </div>
+       
             <div class="table-responsive">
                 <table class="table table-sm table-hover mb-0">
                     <thead>
                         <tr>
                             <th>ID</th>
+               
                             <th>Examination</th>
                             <th>Criterion</th>
                             <th>Max Marks</th>
                             <th>Weightage</th>
+                
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
@@ -58,23 +74,33 @@
                                 <td>{{ r.id }}</td>
                                 <td>{{ r.exam_name }}</td>
                                 <td>{{ r.criterion_name }}</td>
+                            
                                 <td>{{ r.max_marks }}</td>
                                 <td>{{ r.weightage }}</td>
+                          
+                          
                                 <td class="text-end">
                                     <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin.rubric_edit', rubric_id=r.id) }}">Edit</a>
+                             
                                     <form method="POST" action="{{ url_for('admin.rubric_delete', rubric_id=r.id) }}" class="d-inline"
                                           onsubmit="return confirm('Delete this rubric?')">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                    </form>
+                           
+                                          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                              
+                              
+                                        </form>
                                 </td>
                             </tr>
                         {% else %}
                             <tr><td colspan="6" class="text-center text-muted py-4">No rubrics found.</td></tr>
-                        {% endfor %}
+                    
+                            {% endfor %}
                     </tbody>
                 </table>
+           
             </div>
         </div>
     </div>
+    
 </div>
 {% endblock %}

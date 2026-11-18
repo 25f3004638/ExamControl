@@ -1,32 +1,49 @@
 {% macro list_view(title, search_url, search_value, columns, rows, empty_msg="No records found.", actions=None) %}
 <div class="card">
+
+
     <div class="card-header d-flex justify-content-between align-items-center">
         <span class="fw-semibold">{{ title }}</span>
+
+
         <form method="GET" action="{{ search_url }}" class="d-flex gap-2" style="width:280px;">
+
             <input type="text" name="q" class="form-control form-control-sm" placeholder="Search..." value="{{ search_value or '' }}">
             <button type="submit" class="btn btn-sm btn-outline-secondary">Search</button>
+
         </form>
     </div>
+
     <div class="table-responsive">
+        
         <table class="table table-sm table-hover mb-0">
             <thead>
                 <tr>
                     {% for col in columns %}
+
                         <th>{{ col }}</th>
                     {% endfor %}
                     {% if actions %}<th class="text-end">Actions</th>{% endif %}
+
                 </tr>
             </thead>
             <tbody>
                 {% if rows and rows|length > 0 %}
+
                     {% for row in rows %}
                         <tr>
                             {% for col in columns %}
+
+
+
                                 <td>{{ row[col] }}</td>
                             {% endfor %}
                             {% if actions %}
+
                                 <td class="text-end">
                                     {% for action in actions %}
+
+
                                         {% if action.url %}
                                             <a class="btn btn-sm btn-outline-primary" href="{{ action.url }}">{{ action.label }}</a>
                                         {% else %}
@@ -34,14 +51,22 @@
                                                 {% if action.confirm %}
                                                     <input type="hidden" name="confirm" value="1">
                                                 {% endif %}
+
+
+
                                                 <button type="submit" class="btn btn-sm btn-{{ action.btn or 'outline-secondary' }}"
                                                         onclick="return confirm('{{ action.confirm_msg or 'Are you sure?' }}')">
                                                     {{ action.label }}
                                                 </button>
                                             </form>
+
                                         {% endif %}
+
                                     {% endfor %}
+
                                 </td>
+
+
                             {% endif %}
                         </tr>
                     {% endfor %}
@@ -50,11 +75,13 @@
                 {% endif %}
             </tbody>
         </table>
+        
     </div>
+
 </div>
 {% endmacro %}
 
-{% macro form_row(label, name, value, type='text', required=false, placeholder='', rows=0, step=None) %}
+{% macro form_row(label, name, value, type='text', required=false, placeholder='', rows=0, step=None, min=None, max=None) %}
 <div class="mb-3">
     <label class="form-label small fw-semibold">{{ label }}</label>
     {% if rows > 0 %}
@@ -62,7 +89,7 @@
                   {% if required %}required{% endif %}>{{ value or '' }}</textarea>
     {% else %}
         <input type="{{ type }}" name="{{ name }}" class="form-control" placeholder="{{ placeholder }}"
-               value="{{ value or '' }}" {% if step %}step="{{ step }}"{% endif %} {% if required %}required{% endif %}>
+               value="{{ value or '' }}" {% if step %}step="{{ step }}"{% endif %} {% if min is not none %}min="{{ min }}"{% endif %} {% if max is not none %}max="{{ max }}"{% endif %} {% if required %}required{% endif %}>
     {% endif %}
 </div>
 {% endmacro %}
